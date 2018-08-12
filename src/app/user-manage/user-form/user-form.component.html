@@ -1,0 +1,96 @@
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="name">用户名</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input formControlName="name" id="name" >
+        <nz-form-explain *ngIf="validateForm.get('name').dirty && validateForm.get('name').errors">请输入用户名!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="sex">性别</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <nz-select formControlName="sex" id="sex" >
+              <nz-option nzValue="MALE" nzLabel="男"></nz-option>
+              <nz-option nzValue="FEMALE" nzLabel="女"></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('sex').dirty && validateForm.get('sex').errors">请选择性别!</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="age">年龄</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="age" id="age">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="role">角色</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+            <nz-select formControlName="role" id="role" >
+                <nz-option nzValue="ADMIN" nzLabel="系统管理员"></nz-option>
+                <nz-option nzValue="ORGMGR" nzLabel="组织管理员"></nz-option>
+                <nz-option nzValue="OPMGR" nzLabel="操作管理员"></nz-option>
+                <nz-option nzValue="CUSTOMER" nzLabel="客户"></nz-option>
+            </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('role').dirty && validateForm.get('role').errors">请选择一个角色!</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item *ngIf="isChoseAdmi()">
+        <nz-form-label  [nzSm]="6" [nzXs]="24" nzRequired nzFor="orgnization">组织</nz-form-label>
+        <nz-form-control  [nzSm]="14" [nzXs]="24">
+          <!--input nz-input formControlName="orgnization" id="orgnization"-->
+          <nz-select   formControlName="orgnization" id="orgnization" >
+              <nz-option *ngFor="let org of orgizations" nzValue={{org.userName}} nzLabel={{org.userName}}></nz-option>
+          </nz-select>
+          <nz-form-explain *ngIf="validateForm.get('orgnization').dirty && validateForm.get('orgnization').errors">请选择组织!</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="password" nzRequired>密码</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input type="password" id="password" formControlName="password" (ngModelChange)="updateConfirmValidator()">
+        <nz-form-explain *ngIf="validateForm.get('password').dirty && validateForm.get('password').errors">请输入密码!</nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSm]="6" [nzXs]="24" nzFor="checkPassword" nzRequired>确认密码</nz-form-label>
+      <nz-form-control [nzSm]="14" [nzXs]="24">
+        <input nz-input type="password" formControlName="checkPassword" id="checkPassword">
+        <nz-form-explain *ngIf="validateForm.get('checkPassword').dirty && validateForm.get('checkPassword').errors">
+          <ng-container *ngIf="validateForm.get('checkPassword').hasError('required')">
+            请确认密码!
+          </ng-container>
+          <ng-container *ngIf="validateForm.get('checkPassword').hasError('confirm')">
+            两次密码不一致!
+          </ng-container>
+        </nz-form-explain>
+      </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="question">密码提示问题</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="question" id="question">
+          <nz-form-explain *ngIf="validateForm.get('question').dirty && validateForm.get('question').errors">请选择密码提示问题!</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="answer">答案</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="answer" id="answer">
+          <nz-form-explain *ngIf="validateForm.get('answer').dirty && validateForm.get('answer').errors">请输入答案!</nz-form-explain>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24"  nzFor="addinfo">备注</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24">
+          <input nz-input formControlName="addinfo" id="addinfo">
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control [nzOffset]="7" [nzSpan]="12">
+          <button nz-button nzType="primary">注册</button>
+          <button nz-button (click)="resetForm($event)">取消</button>
+        </nz-form-control>
+      </nz-form-item>
+  </form>

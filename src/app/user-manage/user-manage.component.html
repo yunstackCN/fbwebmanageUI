@@ -1,0 +1,51 @@
+
+
+<app-user-form [hidden]="!isHidden" [cookieInfo]="cookInfo" (canceleRgister)="cancelCommit()" (registerUser)="showUser($event)" ></app-user-form>
+
+<div [hidden]="isHidden">
+<button  nz-button nzType="primary" (click)="isHidden=true">注册</button> 
+<nz-table
+  #rowSelectionTable
+  [nzData]="dataSet"
+  [nzPageSize]="10"
+  >
+  <thead>
+    <tr>
+      <!--h nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelection" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th-->
+      <th>用户名</th>
+      <th>性别</th>
+      <th>年龄</th>
+      <th>组织</th>
+      <th>角色</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of rowSelectionTable.data">
+      <!--td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td-->
+      <td>{{data.name}}</td>
+      <td>{{data.sex}}</td>
+      <td>{{data.age}}</td>
+      <td>{{data.orgnization}}</td>
+      <td>{{data.role}}</td>
+      <td>
+        <div class="dropdown">
+          <button   class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            编辑
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a nz-popconfirm nzTitle="确定要注销该用户?" (nzOnConfirm)="unRegister()" (nzOnCancel)="cancelunReg()">注销</a></li>
+            <!--li><a routerLink="/usermodify/{{data.name}}">修改密码</a></li-->
+            <li><a (click)="open(data.name)">修改密码</a></li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+</div>
+
+<nz-drawer [nzBodyStyle]="{ height: 'calc(100% - 55px)', overflow: 'auto', 'padding-bottom':'53px' }"[nzMaskClosable]="false" [nzWidth]="720" [nzVisible]="visible" nzTitle="修改{{currentUser}}密码" (nzOnClose)="close()">
+    <app-user-modify [username]="currentUser" (returnMain)="close()" ></app-user-modify>
+</nz-drawer>
