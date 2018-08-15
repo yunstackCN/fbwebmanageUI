@@ -118,17 +118,22 @@ export class AccountManageComponent implements OnInit {
   addUser(event){
     console.log('event is ' + event.name);
     this.isHidden = false;
-    let accountinfo:Account = event;
+    let accountinfo:Account = event
+    if (event.addInfo == null)
+    {
+      accountinfo.addInfo = " ";
+    }
     let data = {
-      id          :  accountinfo.id,
-      userName    :`${accountinfo.userName?"":accountinfo.userName}`,
-      orgnization :`${accountinfo.orgnization}`,
-      name        :`${accountinfo.name}`,
-      regTime     :`${accountinfo.regTime?"":accountinfo.regTime}`,
-      status      : `${this.trans.convertENtoCN(accountinfo.status)}`,
-      addInfo     :`${accountinfo.addInfo?"":accountinfo.addInfo}`
+      id          :  event.id,
+      userName    :`${event.userName}`,
+      orgnization :`${event.orgnization}`,
+      name        :`${event.name}`,
+      regTime     :`${event.regTime}`,
+      status      : `${this.trans.convertENtoCN(event.status)}`,
+      addInfo     :`${event.addInfo}`
   };
     this.displayData.push(data);
+    this.displayData = [...this.displayData];
   }
   frozen(accontdata){
     let accountlst:Modifyaccount[] = [];

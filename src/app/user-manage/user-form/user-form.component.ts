@@ -150,6 +150,24 @@ export class UserFormComponent implements OnInit {
     }
     return false;
   }
+  isOperator():boolean{
+    if(this.cookieInfo.role == "OPMGR"){
+      return true;
+    }
+    return false;
+  }
+  iOrg():boolean{
+    if(this.cookieInfo.role == "ORGMGR"){
+      return true;
+    }
+    return false;
+  }
+  iCustom():boolean{
+    if(this.cookieInfo.role == "CUSTOMER"){
+      return true;
+    }
+    return false;
+  }
   isChoseAdmi():boolean{
     //console.log('current role is ' + this.validateForm.get('role').value);
     if(this.validateForm.get('role').value  == "ADMIN")

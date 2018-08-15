@@ -72,7 +72,7 @@ export class UserManageComponent implements OnInit {
           }
           data.push({
           name   : `${users[i].name}`,
-          sex    : `${users[i].sex}`,
+          sex    : `${this.trans.convertENtoCN(users[i].sex)}`,
           age    : users[i].age,
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
@@ -97,7 +97,7 @@ export class UserManageComponent implements OnInit {
           }
           data.push({
           name   : `${users[i].name}`,
-          sex    : `${users[i].sex}`,
+          sex    : `${this.trans.convertENtoCN(users[i].sex)}`,
           age    : users[i].age,
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
@@ -118,7 +118,7 @@ export class UserManageComponent implements OnInit {
           }
           data.push({
           name   : `${users[i].name}`,
-          sex    : `${users[i].sex}`,
+          sex    : `${this.trans.convertENtoCN(users[i].sex)}`,
           age    : users[i].age,
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
@@ -198,6 +198,7 @@ export class UserManageComponent implements OnInit {
     }
     */
     this.dataSet.push(data);
+    this.dataSet = [...this.dataSet];
     console.log(JSON.stringify(this.dataSet));
     
   }
