@@ -12,6 +12,7 @@ import { GetcookieService } from '../../service/getcookie.service';
 import { UserService } from '../../service/user.service';
 import { Cookie } from '../../model/cookie';
 import { Orgnization } from '../../model/orgnization';
+import { CommomService } from '../../service/commom.service';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -44,11 +45,22 @@ export class UserFormComponent implements OnInit {
     if (this.validateForm.get("orgnization").value == null){
       this.userInfo.orgnization = "--";
     }
+    else
+    {
+      this.userInfo.orgnization = this.validateForm.get("orgnization").value;
+    }
     this.userInfo.sex = this.validateForm.get("sex").value;
     this.userInfo.role = this.validateForm.get("role").value;
     
     this.userInfo.age = this.validateForm.get("age").value;
-    this.userInfo.addinfo = this.validateForm.get("addinfo").value;
+    if (this.validateForm.get("addinfo").value == null)
+    {
+      this.userInfo.addinfo = " ";
+    }
+    else{
+      this.userInfo.addinfo = this.validateForm.get("addinfo").value;
+    }
+    
     this.questionInfo.userName = this.validateForm.get("name").value;
     this.questionInfo.question = this.validateForm.get("question").value;
     this.questionInfo.answer = this.validateForm.get("answer").value;
@@ -59,8 +71,17 @@ export class UserFormComponent implements OnInit {
       !(this.validateForm.get("orgnization").valid) && this.validateForm.get("sex").valid && 
       this.validateForm.get("role").valid && this.validateForm.get("answer").valid 
       && this.validateForm.get("question").valid && this.validateForm.get("checkPassword").valid )){
-         this.registerUser.emit(this.userInfo);
-         this.validateForm.reset();
+         
+         this.userService.registerUser(this.userInfo, this.commonService.getCkheader(this.cookieInfo),
+         this.commonService.getHostUrl()).subscribe(((user)=>
+            { 
+              this.registerUser.emit(user);
+              this.validateForm.reset();
+            }));
+
+         this.userService.addQuestion(this.questionInfo, this.commonService.getCkheader(this.cookieInfo),
+         this.commonService.getHostUrl()).subscribe((()=>{}));
+         
     }
     else
     {
@@ -92,7 +113,7 @@ export class UserFormComponent implements OnInit {
     this.canceleRgister.emit();
   }
 
-  constructor(private fb: FormBuilder, private ck :GetcookieService, private userService: UserService) {
+  constructor(private fb: FormBuilder,  private userService: UserService, private cks:GetcookieService,private commonService:CommomService) {
   }
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -110,12 +131,14 @@ export class UserFormComponent implements OnInit {
     
     if (this.isAmdin())
     {
-      //this.userService.getAllOrg();
-      this.orgizations.push({userName: `${this.cookieInfo.userName}`});// todo remove
+      this.userService.getAllOrg(this.commonService.getHostUrl()).subscribe(
+        (orgs)=>{this.orgizations = [...orgs];}
+      );
+      //this.orgizations.push({userName: `${this.cookieInfo.userName}`});// todo remove
     }
     else
     {
-      this.orgizations.push({userName: `${this.cookieInfo.userName}`});
+      this.orgizations.push({name: `${this.cookieInfo.orgnization}`});
     }
     
     //let cookInfo = this.ck.getcookie();

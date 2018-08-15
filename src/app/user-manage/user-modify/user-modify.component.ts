@@ -9,6 +9,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { CommomService } from '../../service/commom.service';
 @Component({
   selector: 'app-user-modify',
   templateUrl: './user-modify.component.html',
@@ -23,7 +24,8 @@ export class UserModifyComponent implements OnInit {
   constructor(private route: ActivatedRoute,
     private userService: UserService,
     private location: Location,
-    private fb: FormBuilder) { 
+    private fb: FormBuilder,
+    private commonService:CommomService) { 
       this.modifyvalidateForm = this.fb.group({
         modifypassword         : [ null, [ Validators.required ] ],
         modifycheckPassword    : [ null, [ Validators.required , this.confirmationValidator] ]
@@ -54,7 +56,9 @@ export class UserModifyComponent implements OnInit {
     if(this.modifyvalidateForm.valid)
     {
       this.userpassword.password = this.modifyvalidateForm.get("modifypassword").value;
-      //save();
+      this.userpassword.name = this.username;
+      console.log("UserModifyComponent submitForm modifypaaword is " + this.userpassword.name);
+      this.userService.modifyPassword(this.userpassword, this.commonService.getHostUrl()).subscribe(()=>{console.log("UserModifyComponent has modify passworld")});
       this.modifyvalidateForm.reset();
       this.returnMain.emit();
     }

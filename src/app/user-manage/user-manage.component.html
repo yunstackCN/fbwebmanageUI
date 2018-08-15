@@ -4,6 +4,7 @@
 
 <div [hidden]="isHidden">
 <button  nz-button nzType="primary" (click)="isHidden=true">注册</button> 
+<button  nz-button nzType="primary" (click)="query()">查询</button> 
 <nz-table
   #rowSelectionTable
   [nzData]="dataSet"
@@ -17,6 +18,8 @@
       <th>年龄</th>
       <th>组织</th>
       <th>角色</th>
+      <th>状态</th>
+      <th>备注</th>
       <th>操作</th>
     </tr>
   </thead>
@@ -28,6 +31,8 @@
       <td>{{data.age}}</td>
       <td>{{data.orgnization}}</td>
       <td>{{data.role}}</td>
+      <td>{{data.status}}</td>
+      <td>{{data.addinfo}}</td>
       <td>
         <div class="dropdown">
           <button   class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -35,7 +40,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a nz-popconfirm nzTitle="确定要注销该用户?" (nzOnConfirm)="unRegister()" (nzOnCancel)="cancelunReg()">注销</a></li>
+            <li><a nz-popconfirm nzTitle="确定要注销该用户?" (nzOnConfirm)="unRegister(data.name)" (nzOnCancel)="cancelunReg()">注销</a></li>
             <!--li><a routerLink="/usermodify/{{data.name}}">修改密码</a></li-->
             <li><a (click)="open(data.name)">修改密码</a></li>
           </ul>

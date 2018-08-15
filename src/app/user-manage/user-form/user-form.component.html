@@ -40,7 +40,7 @@
         <nz-form-control  [nzSm]="14" [nzXs]="24">
           <!--input nz-input formControlName="orgnization" id="orgnization"-->
           <nz-select   formControlName="orgnization" id="orgnization" >
-              <nz-option *ngFor="let org of orgizations" nzValue={{org.userName}} nzLabel={{org.userName}}></nz-option>
+              <nz-option *ngFor="let org of orgizations" nzValue={{org.name}} nzLabel={{org.name}}></nz-option>
           </nz-select>
           <nz-form-explain *ngIf="validateForm.get('orgnization').dirty && validateForm.get('orgnization').errors">请选择组织!</nz-form-explain>
         </nz-form-control>

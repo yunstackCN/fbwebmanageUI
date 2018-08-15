@@ -16,6 +16,7 @@ import { AccountManageComponent } from './account-manage/account-manage.componen
 import { AccountFormComponent } from './account-manage/account-form/account-form.component';
 import { UserModifyComponent } from './user-manage/user-modify/user-modify.component';
 import { AccountImportComponent } from './account-manage/account-import/account-import.component';
+import { CookieService } from 'ngx-cookie-service';
 registerLocaleData(zh);
 
 @NgModule({
@@ -37,7 +38,7 @@ registerLocaleData(zh);
     AppRoutingModule,
      ReactiveFormsModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

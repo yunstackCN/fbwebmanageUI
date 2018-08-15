@@ -7,9 +7,26 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class GetcookieService {
 
-  constructor() { }
-  getcookie():any{
-    let cookieInfo: Cookie  = new Cookie("admin","admin","admin");
-    return cookieInfo;
+  constructor(private cookieService: CookieService) { 
+    
+    
   }
+  getcookie():any{
+    let cookieInfo: Cookie = new Cookie("ADMIN","ADMIN","ADMIN");
+    if (this.cookieService.check('user') && this.cookieService.check('role') && this.cookieService.check('org'))
+    {
+      cookieInfo = new Cookie(this.cookieService.get('user'),this.cookieService.get('org'),this.cookieService.get('role'));
+    }
+    else
+    {
+      console.log("error: no data in cookies");
+      this.cookieService.set("user", "999");
+      this.cookieService.set("role", "OPMGR");
+      this.cookieService.set("org", "org1");
+    }
+    return cookieInfo;
+    
+  }
+  
+
 }

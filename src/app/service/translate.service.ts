@@ -23,29 +23,33 @@ export class TranslateService {
     {
       return "CUSTOMER";
     }
-    else if ("男")
+    else if ("男" == input)
     {
       return "MALE";
     }
-    else if ("女")
+    else if ("女" == input)
     {
       return "FEMALE";
     }
-    else if ("正常")
+    else if ("正常" == input)
     {
       return "NORMAL";
     }
-    else if ("冻结")
+    else if ("冻结" == input)
     {
       return "LOCKED";
     }
-    else if ("待审核")
+    else if ("待审核" == input)
     {
       return "AUDITING";
     }
-    else if ("注销")
+    else if ("注销" == input)
     {
       return "UNREGISTERED";
+    }
+    else if ("审核不通过" == input)
+    {
+      return "AUDIT_NOT_PASS";
     }
     else
     {
@@ -69,29 +73,33 @@ export class TranslateService {
     {
       return "客户";
     }
-    else if ("MALE")
+    else if ("MALE" == input)
     {
       return "男";
     }
-    else if ("FEMALE")
+    else if ("FEMALE" == input)
     {
       return "女";
     }
-    else if ("NORMAL")
+    else if ("NORMAL" == input)
     {
       return "正常";
     }
-    else if ("LOCKED")
+    else if ("LOCKED" == input)
     {
       return "冻结";
     }
-    else if ("AUDITING")
+    else if ("AUDITING" == input)
     {
       return "待审核";
     }
-    else if ("UNREGISTERED")
+    else if ("UNREGISTERED" == input || "DEACTIVE" == input)
     {
       return "注销";
+    }
+    else if ("AUDIT_NOT_PASS" == input)
+    {
+      return "审核不通过";
     }
     else
     {

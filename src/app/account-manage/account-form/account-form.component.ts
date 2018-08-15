@@ -13,6 +13,8 @@ import { UserService } from '../../service/user.service';
 import { Cookie } from '../../model/cookie';
 import { Orgnization } from '../../model/orgnization';
 import { Account } from '../../model/account';
+import { AccountService } from '../../service/account.service';
+import { CommomService } from '../../service/commom.service';
 @Component({
   selector: 'app-account-form',
   templateUrl: './account-form.component.html',
@@ -30,7 +32,7 @@ export class AccountFormComponent implements OnInit {
   users: User[] = [];
   orgizations: Orgnization[] = [];
   accountInfo: Account = new Account();
-  questionInfo: PaaswrdQuestion = new PaaswrdQuestion();
+  //questionInfo: PaaswrdQuestion = new PaaswrdQuestion();
   validateForm: FormGroup;
   @Input() cookieInfo: Cookie;
   @Output() canceleRgister = new EventEmitter<any>();
@@ -52,8 +54,14 @@ export class AccountFormComponent implements OnInit {
      //this.userService.registerUser().subscribe();
     console.log(this.accountInfo);
     if(this.validateForm.valid){
-         this.registerUser.emit(this.accountInfo);
-         this.validateForm.reset();
+         this.accountService.addAccount(this.accountInfo,
+                            this.commonService.getHostUrl()).subscribe((accountinfo)=>
+                          {
+                            this.registerUser.emit(accountinfo);
+                            this.validateForm.reset();
+                            console.log("AccountFormComponent add account is " + JSON.stringify(accountinfo));
+                          });
+         
     }
     else
     {
@@ -85,7 +93,7 @@ export class AccountFormComponent implements OnInit {
     this.canceleRgister.emit();
   }
 
-  constructor(private fb: FormBuilder, private ck :GetcookieService, private userService: UserService) {
+  constructor(private fb: FormBuilder, private accountService: AccountService, private cks:GetcookieService,private commonService:CommomService,private userService: UserService) {
   }
   ngOnInit(): void {
     this.validateForm = this.fb.group({
@@ -96,22 +104,35 @@ export class AccountFormComponent implements OnInit {
       acountName       : [ null, [ Validators.required ] ],
       addinfo          : [ null]
     });
-    
-    if (this.isAmdin())
-    {
-      //this.userService.getAllOrg();
-      this.orgizations.push({userName: `${this.cookieInfo.userName}`});// todo remove
-    }
-    else
-    {
-      this.orgizations.push({userName: `${this.cookieInfo.userName}`});
-    }
-    
-    //let cookInfo = this.ck.getcookie();
-    //this.accountInfo.name
+    console.log(this.cookieInfo);
 
     // 如果是客户登陆创建账号，组织和客户只能选当前组织和客户
+    if (this.cookieInfo.role == "CUSTOMER")
+    {
+      this.orgizations.push({name: `${this.cookieInfo.orgnization}`});
+      this.users.push({name: `${this.cookieInfo.userName}`});
+    }
     // 如果是操作员登陆，组织取当前用户所在组织，用户选该组织下的角色是客户的用户
+    if (this.cookieInfo.role == "OPMGR")
+    {
+      let org = new Orgnization(this.cookieInfo.orgnization);
+      this.orgizations.push({name: `${this.cookieInfo.orgnization}`});
+      this.userService.getAllUsers(this.commonService.getCkheader(this.cookieInfo),
+                              this.commonService.getHostUrl()).subscribe((users) => 
+                                   {
+                                    console.log(" AccountFormComponent get all from users" + JSON.stringify(users));
+                                       this.updateUiFromSrv(users);
+                                      });
+    }
+  }
+  updateUiFromSrv(users:User[]){
+    for (let i = 0;i < users.length; i++)
+      {
+        if ("CUSTOMER" == users[i].role && this.cookieInfo.orgnization == users[i].orgnization)
+        {
+          this.users.push(users[i]);
+        }
+      }
   }
   isAmdin():boolean{
     if(this.cookieInfo.role == "ADMIN"){

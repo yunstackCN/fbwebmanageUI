@@ -1,6 +1,6 @@
 export class Orgnization {
     constructor(
-        public userName: string,
+        public name?: string,
         public id?: number,
         public addInfo?: string
       ) {  }
