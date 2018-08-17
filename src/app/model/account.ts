@@ -7,6 +7,7 @@ export class Account {
         public password?: string,
         public status?: string,
         public regTime?:string,
-        public addInfo?: string
+        public addInfo?: string,
+        public accountid?: string
       ) {  }
 }

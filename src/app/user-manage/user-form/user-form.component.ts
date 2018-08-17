@@ -13,6 +13,7 @@ import { UserService } from '../../service/user.service';
 import { Cookie } from '../../model/cookie';
 import { Orgnization } from '../../model/orgnization';
 import { CommomService } from '../../service/commom.service';
+import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-user-form',
   templateUrl: './user-form.component.html',
@@ -55,7 +56,7 @@ export class UserFormComponent implements OnInit {
     this.userInfo.age = this.validateForm.get("age").value;
     if (this.validateForm.get("addinfo").value == null)
     {
-      this.userInfo.addinfo = " ";
+      this.userInfo.addinfo = " ";  
     }
     else{
       this.userInfo.addinfo = this.validateForm.get("addinfo").value;
@@ -75,8 +76,13 @@ export class UserFormComponent implements OnInit {
          this.userService.registerUser(this.userInfo, this.commonService.getCkheader(this.cookieInfo),
          this.commonService.getHostUrl()).subscribe(((user)=>
             { 
-              this.registerUser.emit(user);
-              this.validateForm.reset();
+              if (user != null){
+                this.registerUser.emit(user);
+                this.validateForm.reset();
+              }
+              else{
+                this.message.create("error", ` 注册失败`);
+              }
             }));
 
          this.userService.addQuestion(this.questionInfo, this.commonService.getCkheader(this.cookieInfo),
@@ -113,7 +119,8 @@ export class UserFormComponent implements OnInit {
     this.canceleRgister.emit();
   }
 
-  constructor(private fb: FormBuilder,  private userService: UserService, private cks:GetcookieService,private commonService:CommomService) {
+  constructor(private fb: FormBuilder,  private userService: UserService, 
+       private cks:GetcookieService,private commonService:CommomService,private message: NzMessageService) {
   }
   ngOnInit(): void {
     this.validateForm = this.fb.group({

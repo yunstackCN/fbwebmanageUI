@@ -20,9 +20,10 @@ export class GetcookieService {
     else
     {
       console.log("error: no data in cookies");
-      this.cookieService.set("user", "999");
-      this.cookieService.set("role", "OPMGR");
+      this.cookieService.set("user", "admin");
+      this.cookieService.set("role", "CUSTOMER");
       this.cookieService.set("org", "org1");
+      cookieInfo = new Cookie(this.cookieService.get('user'),this.cookieService.get('org'),this.cookieService.get('role'));
     }
     return cookieInfo;
     

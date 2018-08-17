@@ -53,7 +53,7 @@ export class UserManageComponent implements OnInit {
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
           status: `${this.trans.convertENtoCN(users[i].status)}`,
-          addinfo: `${users[i].addinfo?"":users[i].addinfo }`
+          addinfo: `${users[i].addinfo?users[i].addinfo:"" }`
         });
       }
       this.dataSet = data;
@@ -77,7 +77,7 @@ export class UserManageComponent implements OnInit {
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
           status: `${this.trans.convertENtoCN(users[i].status)}`,
-          addinfo: `${users[i].addinfo?"":users[i].addinfo }`
+          addinfo: `${users[i].addinfo?users[i].addinfo:"" }`
         });
       }
       this.dataSet = data;
@@ -102,7 +102,7 @@ export class UserManageComponent implements OnInit {
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
           status: `${this.trans.convertENtoCN(users[i].status)}`,
-          addinfo: `${users[i].addinfo?"":users[i].addinfo }`
+          addinfo: `${users[i].addinfo?users[i].addinfo:"" }`
         });
       }
       this.dataSet = data;
@@ -123,7 +123,7 @@ export class UserManageComponent implements OnInit {
           orgnization: `${users[i].orgnization}`,
           role : `${this.trans.convertENtoCN(users[i].role)}`,
           status: `${this.trans.convertENtoCN(users[i].status)}`,
-          addinfo: `${users[i].addinfo?"":users[i].addinfo }`
+          addinfo: `${users[i].addinfo?users[i].addinfo:"" }`
         });
       }
       this.dataSet = data;

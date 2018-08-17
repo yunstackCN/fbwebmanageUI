@@ -15,6 +15,8 @@ import { Orgnization } from '../../model/orgnization';
 import { Account } from '../../model/account';
 import { AccountService } from '../../service/account.service';
 import { CommomService } from '../../service/commom.service';
+import { Observable } from 'rxjs';
+import { NzMessageService } from 'ng-zorro-antd';
 @Component({
   selector: 'app-account-form',
   templateUrl: './account-form.component.html',
@@ -37,6 +39,7 @@ export class AccountFormComponent implements OnInit {
   @Input() cookieInfo: Cookie;
   @Output() canceleRgister = new EventEmitter<any>();
   @Output() registerUser = new EventEmitter<any>();
+  registerResult = true;
   submitForm(): void {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[ i ].markAsDirty();
@@ -57,6 +60,11 @@ export class AccountFormComponent implements OnInit {
          this.accountService.addAccount(this.accountInfo,
                             this.commonService.getHostUrl()).subscribe((accountinfo)=>
                           {
+                            if (accountinfo == null)
+                            {
+                              this.registerResult = false;
+                              this.nzMessageService.create("error", `注册失败`);
+                            }
                             this.registerUser.emit(accountinfo);
                             this.validateForm.reset();
                             console.log("AccountFormComponent add account is " + JSON.stringify(accountinfo));
@@ -70,7 +78,8 @@ export class AccountFormComponent implements OnInit {
 
 
   }
-
+  setResutl(){
+    this.registerResult=true;}
   updateConfirmValidator(): void {
     /** wait for refresh value */
     Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
@@ -93,7 +102,8 @@ export class AccountFormComponent implements OnInit {
     this.canceleRgister.emit();
   }
 
-  constructor(private fb: FormBuilder, private accountService: AccountService, private cks:GetcookieService,private commonService:CommomService,private userService: UserService) {
+  constructor(private fb: FormBuilder, private accountService: AccountService, private cks:GetcookieService,
+    private commonService:CommomService,private userService: UserService, private nzMessageService: NzMessageService) {
   }
   ngOnInit(): void {
     this.validateForm = this.fb.group({

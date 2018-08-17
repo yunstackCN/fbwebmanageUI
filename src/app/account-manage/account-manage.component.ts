@@ -27,11 +27,12 @@ export class AccountManageComponent implements OnInit {
   searchAddress: string;
   data = [];
   displayData = [ ...this.data ];
-
+  percent = 0;
   cookInfo:Cookie;
   isHidden: boolean = false;
   constructor(private nzMessageService: NzMessageService, private accountService: AccountService, 
-    private cks:GetcookieService,private commonService:CommomService,private trans:TranslateService) { }
+    private cks:GetcookieService,private commonService:CommomService,
+    private trans:TranslateService) { }
 
   ngOnInit() {
     this.cookInfo = this.cks.getcookie();
@@ -43,13 +44,14 @@ export class AccountManageComponent implements OnInit {
                                                                               for (let i =0; i < accounts.length; i++)
                                                                               {
                                                                                 dt.push({
-                                                                                  id     :accounts[i].id,
+                                                                                  //id     :accounts[i].id,
+                                                                                  accountid   :`${accounts[i].accountid?accounts[i].accountid:'test'}`,
                                                                                   userName   : `${accounts[i].userName}`,
                                                                                   orgnization    : `${accounts[i].orgnization}`,
                                                                                   name: `${accounts[i].name}`,
                                                                                   regTime: `${accounts[i].regTime}`,
                                                                                   status: `${this.trans.convertENtoCN(accounts[i].status)}` ,
-                                                                                  addInfo: `${accounts[i].addInfo?"":accounts[i].addInfo}`,
+                                                                                  addInfo: `${accounts[i].addInfo?accounts[i].addInfo:""}`,
                                                                                 })
                                                                               }
                                                                               this.data = dt;
@@ -124,7 +126,8 @@ export class AccountManageComponent implements OnInit {
       accountinfo.addInfo = " ";
     }
     let data = {
-      id          :  event.id,
+      //id          :  event.id,
+      accountid   :`${event.accountid?event.accountid:'test'}`,
       userName    :`${event.userName}`,
       orgnization :`${event.orgnization}`,
       name        :`${event.name}`,
@@ -201,14 +204,25 @@ export class AccountManageComponent implements OnInit {
 
     FileSaver.saveAs(new Blob([this.s2ab(outputfile)], { type: 'application/octet-stream' }), 'account.xls');
   }
-  
   uploadTable(importfile){
+    /*
+    for (let i = 0; i < 300; i++)
+    {
+      componetObj.percent= ((i + 1)*100)/300;
+      let j = 0;
+      
+      
+    }*/
+    let componetObj = this;
+    let j = 1;
     console.log(importfile);
     let reader = new FileReader();
+    
     let accontService = this.accountService;
     let cmmService = this.commonService;
     let tran = this.trans;
     let displayData = this.displayData;
+    //let displayData = [];
 	  reader.onload = function (filerd:any) {
       let data = filerd.target.result;
       let workbook = read(data, {type: 'binary'});
@@ -217,23 +231,38 @@ export class AccountManageComponent implements OnInit {
       let uploadAccount:Account[] = utils.sheet_to_json(worksheet);
       console.log(JSON.stringify(uploadAccount));
       for (let i = 0; i < uploadAccount.length; i++)
+      //for (let i = 0; i < 1000; i++)
       {
           accontService.addAccount(uploadAccount[i],
+          //accontService.addAccount(uploadAccount[0],
           cmmService.getHostUrl()).subscribe((accountinfo)=>
           {
-              displayData.push({
-              id          :  accountinfo.id,
-              userName    :`${accountinfo.userName}`,
-              orgnization :`${accountinfo.orgnization}`,
-              name        :`${accountinfo.name}`,
-              regTime     :`${accountinfo.regTime}`,
-              status      : `${tran.convertENtoCN(accountinfo.status)}`,
-              addInfo     :`${accountinfo.addInfo}`
-          });
+              
+              j = j + 1;
+              if (accountinfo != null)
+              {
+                componetObj.displayData.push({
+                  id          :  accountinfo.id,
+                  userName    :`${accountinfo.userName}`,
+                  orgnization :`${accountinfo.orgnization}`,
+                  name        :`${accountinfo.name}`,
+                  regTime     :`${accountinfo.regTime}`,
+                  status      : `${tran.convertENtoCN(accountinfo.status)}`,
+                  addInfo     :`${accountinfo.addInfo}`
+              });
+              componetObj.displayData = [...componetObj.displayData];
+              }
+              else{
+                let accnmae = uploadAccount[i].name;
+                componetObj.nzMessageService.create("error", `账户 ${accnmae} 注册失败`);
+                console.log(" register error", JSON.stringify(uploadAccount[i]));
+              }
+              componetObj.percent= (j*100)/uploadAccount.length;
+              
          })
       }
     };
-	  reader.readAsBinaryString(importfile.files[0]);
+    reader.readAsBinaryString(importfile.files[0]);
   }
   // 控制导入组件的显示
   visible = false;
@@ -272,6 +301,7 @@ export class AccountManageComponent implements OnInit {
                                                  this.displayData = [ ...this.data ];
                                                 console.log("get account is " + JSON.stringify(accounts))});
   }
+  
 
 
 }

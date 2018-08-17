@@ -1,8 +1,9 @@
+
 <form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="acountName">账号名</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24">
-          <input nz-input formControlName="acountName" id="acountName">
+          <input (focus) = "setResutl()" nz-input formControlName="acountName" id="acountName">
           <nz-form-explain *ngIf="validateForm.get('acountName').dirty && validateForm.get('acountName').errors">请输入账号名!</nz-form-explain>
         </nz-form-control>
     </nz-form-item>  

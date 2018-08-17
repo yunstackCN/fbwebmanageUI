@@ -44,10 +44,12 @@ export class UserService {
   }
   // 注册用户
   registerUser(userInfo, header:any, hostUrl:string):Observable<User>{
-    let url = hostUrl + "usrmgr/register";
+    //let url = hostUrl + "usrmgr/register";
+    let url = hostUrl + "usrmgr/addUser";
     let httpOptions = {
       headers: header
     };
+    userInfo.status = "NORMAL";
     return this.http.post<User>(url, userInfo, httpOptionPost).pipe(
       tap(() => console.log('registerUser')),
       catchError(this.handleError<User>('registerUser'))
