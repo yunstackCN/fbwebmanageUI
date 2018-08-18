@@ -19,11 +19,11 @@ export class GetcookieService {
     }
     else
     {
-      console.log("error: no data in cookies");
-      this.cookieService.set("user", "admin");
-      this.cookieService.set("role", "CUSTOMER");
-      this.cookieService.set("org", "org1");
-      cookieInfo = new Cookie(this.cookieService.get('user'),this.cookieService.get('org'),this.cookieService.get('role'));
+      console.log("error: no data in cookies defalut user role oragn admin admin admin");
+      //this.cookieService.set("user", "admin");
+      //this.cookieService.set("role", "ADMIN");
+      //this.cookieService.set("org", "--");
+      //cookieInfo = new Cookie(this.cookieService.get('user'),this.cookieService.get('org'),this.cookieService.get('role'));
     }
     return cookieInfo;
     

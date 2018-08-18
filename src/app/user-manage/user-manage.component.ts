@@ -70,6 +70,10 @@ export class UserManageComponent implements OnInit {
           {
             continue;
           }
+          if (users[i].role == "ORGMGR")
+          {
+            continue;
+          }
           data.push({
           name   : `${users[i].name}`,
           sex    : `${this.trans.convertENtoCN(users[i].sex)}`,

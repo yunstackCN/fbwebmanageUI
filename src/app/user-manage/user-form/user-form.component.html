@@ -30,7 +30,7 @@
             <nz-select formControlName="role" id="role" >
                 <nz-option *ngIf="isAmdin()" nzValue="ADMIN" nzLabel="系统管理员"></nz-option>
                 <nz-option *ngIf="isAmdin() " nzValue="ORGMGR" nzLabel="组织管理员"></nz-option>
-                <nz-option *ngIf="isAmdin() || iOrg() " nzLabel="操作管理员"></nz-option>
+                <nz-option *ngIf="isAmdin() || iOrg() " nzValue="OPMGR" nzLabel="操作管理员"></nz-option>
                 <nz-option *ngIf="isAmdin() || iOrg() ||  isOperator()"nzValue="CUSTOMER" nzLabel="客户"></nz-option>
             </nz-select>
           <nz-form-explain *ngIf="validateForm.get('role').dirty && validateForm.get('role').errors">请选择一个角色!</nz-form-explain>

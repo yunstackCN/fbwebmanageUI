@@ -45,7 +45,7 @@ export class AccountManageComponent implements OnInit {
                                                                               {
                                                                                 dt.push({
                                                                                   //id     :accounts[i].id,
-                                                                                  accountid   :`${accounts[i].accountid?accounts[i].accountid:'test'}`,
+                                                                                  accountid   :`${accounts[i].accountid?accounts[i].accountid:''}`,
                                                                                   userName   : `${accounts[i].userName}`,
                                                                                   orgnization    : `${accounts[i].orgnization}`,
                                                                                   name: `${accounts[i].name}`,
@@ -127,7 +127,7 @@ export class AccountManageComponent implements OnInit {
     }
     let data = {
       //id          :  event.id,
-      accountid   :`${event.accountid?event.accountid:'test'}`,
+      accountid   :`${event.accountid?event.accountid:''}`,
       userName    :`${event.userName}`,
       orgnization :`${event.orgnization}`,
       name        :`${event.name}`,
